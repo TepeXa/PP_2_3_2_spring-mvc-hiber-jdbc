@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Power</th>
+        <th>Color</th>
+    </tr>
+    <tr th:each="cars, state : ${cars}"
+        class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
+        <td>
+               <a th:href="@{/{id}(id=${cars.getId()})}" th:text="${cars.getId()}">Id </a>
+        </td>
+        <td>
+               <a th:href="@{/{id}(id=${cars.getId()})}" th:utext="${cars.getName()}">Name </a>
+        </td>
+        <td>
+               <a th:href="@{/{id}(id=${cars.getId()})}" th:utext="${cars.getPower}">Power </a>
+        </td>
+        <td>
+                <a th:href="@{/{id}(id=${cars.getId()})}" th:utext="${cars.getColor}">Color </a>
+        </td>
+    </tr>
+</table>
+
+<br/>
+<hr/>
+<a href="/new">Create new car</a>
+
+
+
+</body>
+</html>
