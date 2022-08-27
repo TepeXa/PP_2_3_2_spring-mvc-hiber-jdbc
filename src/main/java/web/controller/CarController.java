@@ -37,7 +37,7 @@ public class CarController {
 
 	@GetMapping ("/cars")
 	public String showall(@RequestParam(value = "count", required = false) Optional<Integer> count, Model model) {
-		model.addAttribute("cars", carDAO.showall(count.orElse(0)));
+		//model.addAttribute("cars", carDAO.showall(count.orElse(0)));
 		return "index";
 	}
 
