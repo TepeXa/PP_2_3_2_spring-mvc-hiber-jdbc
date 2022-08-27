@@ -139,7 +139,6 @@ public class carDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
         //public Object showall(int count) {
