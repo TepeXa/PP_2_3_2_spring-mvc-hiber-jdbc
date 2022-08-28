@@ -1,5 +1,8 @@
 package web.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import web.models.Car;
 
@@ -18,7 +21,15 @@ import java.sql.*;
 
 @Component
 public class carDAO {
-    private static int CAR_COUNT;
+
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public carDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    //private static int CAR_COUNT;
 
     /* private List<Car> cars;
         {
@@ -30,7 +41,7 @@ public class carDAO {
         cars.add(new Car(++CAR_COUNT,"Lamba",999, "purple"));
     }
     */
-
+    /*
     private static final String URL="jdbc:mysql://localhost:3306/new_schema_test";
     private static final String USERNAME="Yanewuser";
     private static final String PASSWORD="Yanewuser!";
@@ -51,7 +62,11 @@ public class carDAO {
         }
     }
 
+     */
+
     public List<Car> index() {
+        return jdbcTemplate.query("SELECT * FROM Car", new BeanPropertyRowMapper<>(Car.class));
+        /*
         List<Car> cars = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
@@ -70,9 +85,14 @@ public class carDAO {
             throw new RuntimeException(e);
         }
         return cars;
+
+         */
     }
 
     public Car show(int id) {
+        return jdbcTemplate.query("SELECT * FROM Car WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Car.class))
+                .stream().findAny().orElse(null);
+       /*
         Car car = null;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM CAR WHERE ID=?");
@@ -90,12 +110,14 @@ public class carDAO {
         }
         return car;
         //return cars.stream().filter(car -> car.getId() == id).findAny().orElse(null);
+        */
     }
 
-    public void save (Car car){
-    //    car.setId(++CAR_COUNT);
-    //    cars.add(car);
-
+    public void save(Car car) {
+        jdbcTemplate.update("INSERT INTO Car VALUES(1,?,?,?)", car.getName(), car.getPower(), car.getColor());
+        //    car.setId(++CAR_COUNT);
+        //    cars.add(car);
+/*
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO CAR VALUES (1,?,?,?)");
             //Statement statement = connection.createStatement();
@@ -110,10 +132,13 @@ public class carDAO {
         }
 
 
+ */
+
     }
 
     public void update(int id, Car updateCar) {
-        try {
+        jdbcTemplate.update("UPDATE Car SET name=?,power=?,color=? WHERE id=?", updateCar.getName(), updateCar.getPower(), updateCar.getColor(), id);
+       /* try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE CAR SET name=?, power=?, color =? WHERE id = ?");
             preparedStatement.setString(1, updateCar.getName());
             preparedStatement.setInt(2, updateCar.getPower());
@@ -127,11 +152,15 @@ public class carDAO {
         //    carToBeUpdated.setName(updateCar.getName());
         //    carToBeUpdated.setPower(updateCar.getPower());
         //    carToBeUpdated.setColor(updateCar.getColor());
+
+        */
+
     }
 
     public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM Car WHERE id=?", id);
         //cars.removeIf(p->p.getId()==id);
-        PreparedStatement preparedStatement = null;
+      /*  PreparedStatement preparedStatement = null;
         try {
             preparedStatement = connection.prepareStatement("DELETE FROM CAR WHERE id = ?");
             preparedStatement.setInt(1, id);
@@ -147,4 +176,7 @@ public class carDAO {
        // }
        // return cars.stream().limit(count).collect(Collectors.toList());
         // }
+
+       */
+    }
 }

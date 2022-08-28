@@ -1,5 +1,7 @@
 package web.config;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -20,6 +22,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebMvc
@@ -58,5 +61,20 @@ public class WebConfig implements WebMvcConfigurer {
         registry.viewResolver(resolver);
     }
 
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/new_schema_test");
+        dataSource.setUsername("Yanewuser");
+        dataSource.setPassword("Yanewuser!");
+        return dataSource;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
+    }
 
 }
