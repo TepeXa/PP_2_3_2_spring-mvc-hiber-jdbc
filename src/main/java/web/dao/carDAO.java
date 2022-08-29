@@ -114,7 +114,7 @@ public class carDAO {
     }
 
     public void save(Car car) {
-        jdbcTemplate.update("INSERT INTO Car VALUES(1,?,?,?)", car.getName(), car.getPower(), car.getColor());
+        jdbcTemplate.update("INSERT INTO Car VALUES(?,?,?,?)", car.getId(), car.getName(), car.getPower(), car.getColor());
         //    car.setId(++CAR_COUNT);
         //    cars.add(car);
 /*

@@ -1,17 +1,27 @@
 package web.models;
 
-//import jakarta.validation.constraints.*;
-
+import javax.persistence.*;
 import javax.validation.constraints.*;
-
+@Entity
+@Table(name = "Car")
 public class Car {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "name")
     @NotEmpty(message = "Name should not be empty")
     @Size(min = 2, max = 40, message = "Name length should be between 2 and 40 characters")
     private String name;
+
+    @Column(name = "power")
     @Min(value=0, message = "Power should be greater than 0")
     @Max(value=999,message = "Power should be smaller than 999" )
     private int power;
+
+    @Column(name = "color")
     @NotEmpty(message = "Color should not be empty")
     private String color;
 
